@@ -18,5 +18,13 @@ mean(y_hat == test_set$sex)
 
 heights %>% group_by(sex) %>% summarise(mean(height), sd(height)) #this shows that men are on average taller than females
 
-y_hat <- ifelse(x > 62, "Male", "Female") %>% factor(levels = levels(test_set$sex))
+y_hat <- ifelse(x > 62, "Male", "Female") %>% factor(levels = levels(test_set$sex)) #Predict male if height is within two standard deviations from the average male.
 mean(y_hat == test_set$sex)
+
+#usually we would not do this as it would overtrain a dataset
+cutoff <- seq(61, 70)
+accuracy <- map_dbl(cutoff, function(x){
+  y_hat <- ifelse(train_set$height > x, "Male", "Female") %>% factor(levels = levels(test_set$sex))
+  mean(y_hat == train_set$sex)
+}) # map function applies every value in cutoff to the function
+accuracy[which.max(accuracy)]
