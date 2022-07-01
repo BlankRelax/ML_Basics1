@@ -1,0 +1,25 @@
+                                **confusion matrix**
+prevalance - more data on one variable than the other
+In this case we have more males than females, and so our prediction algorithim isnt that good, but shows accuracy becuase it predicts many males as females but there are more males than females in the data set, so it shows a higher accuracy than if there were more females than males
+
+sensitivity & specificity - In a categorical outcomes, a positive outcomes is Y = 1 and negative outcome when Y = 0. 
+Sensitivity is the abiblity of an algorithim to predict a postive outcomes when the actual outcome is positive, i.e y_hat =1 when y =1
+specificty - the abilbity for an algorithim to predict negative outcomes when the actual outcome is negative , i.e y_hat =0 when y =0
+
+TP - when an actual outcome is positive and is predicted to be postive
+FN - when an actual outcome is +, but predicted -
+FP - when an actual outcome is - but predicted +
+TN - actual outcome is - and predicted -
+these define the elements of the confusion matrix
+
+sensitivity <- TP/(TP + FN) aka recall
+specificity - TN/(TN + FP) AKA TRUE NEGATIVE RATE
+
+                               **BALANCED SCORE AND F1 SCORE**
+average of specificity and sensitivity - harmonic avergae - F_1score
+
+                              **ROC AND PRECISION CURVES**
+
+  
+
+ 

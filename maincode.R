@@ -1,6 +1,7 @@
 library(caret)
 library(dslabs)
 library(tidyverse)
+library(ggplot2)
 data(heights)
 
 
@@ -44,3 +45,14 @@ F_1 <- map_dbl(cutoff, function(x){
 }) # map function applies every value in cutoff to the function
 F_1[which.max(F_1)]
 cutoff[which.max(F_1)]
+
+#ROC curve
+cutoffs <- c(50, seq(60, 75), 80)
+height_cutoff <- map_df(cutoffs, function(x){
+  y_hat <- ifelse(test_set$height > x , "Male" , "Female") %>% factor(levels = c("Female", "Male"))
+  list(method = "Height cuttoff",
+       FPR =1-specificity(y_hat, test_set$sex),
+       TPR = sensitivity(y_hat, test_set$sex))
+})
+
+
