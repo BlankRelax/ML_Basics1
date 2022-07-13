@@ -16,28 +16,13 @@ make_data <- function(n = 1000, p = 0.5,
   list(train = data.frame(x = x, y = as.factor(y)) %>% slice(-test_index),
        test = data.frame(x = x, y = as.factor(y)) %>% slice(test_index))
 }
-
-make_fit <- function(mu_1){
-  dat <- make_data(mu_1)
-  fit <- glm(y ~ x, data = dat$train, family = "binomial")
-  y_hat <- predict(fit, newdata = dat$test)
-  res <-sum(dat$train[ ,2]-y_hat)  
-}
-
-
-make_fit(mu_1 <- seq(0, 3, len=25))
-
-set.seed(1)
 mu_1 <- seq(0, 3, len=25)
-res <- replicate(25, make_fit(mu_1))         
-res
-
-
-
-
-
-
-
+set.seed(1)
+dat <- make_data()
+glm_fit <- glm(y ~ x ,data = dat$train, family = "binomial")
+y_hat <- predict(glm_fit, newdata = dat$test, type = "response")
+y_hat_logit <- ifelse(y_hat > 0.5, 1, 0) %>% factor
+confusionMatrix(y_hat_logit, dat$test$y)$overall[["Accuracy"]]
 
 
 
