@@ -24,6 +24,7 @@ make_fit <- function(mu_1){
   res <-sum(dat$train[ ,2]-y_hat)  
 }
 
+
 make_fit(mu_1 <- seq(0, 3, len=25))
 
 set.seed(1)
