@@ -29,11 +29,18 @@ dat <- map_df(str_split(pdf_text(fn), "\n"), function(s){
                         "JUL" = 7, "AGO" = 8, "SEP" = 9, "OCT" = 10, "NOV" = 11, "DEC" = 12)) %>%
   mutate(date = make_date(year, month, day)) %>%
   dplyr::filter(date <= "2018-05-01")
+dat <- dat[-181,]
 
-dat %>% ggplot(aes(date, deaths)) + geom_point()+ geom_smooth(size = 3, color="red", span = 60/1205, method = "loess", method.args = list(degree=1))
-
+span <- 60/1204
+fit <- loess(deaths~as.numeric(date), degree=1, span = span, data=dat)
+dat %>% mutate(smooth = fit$fitted) %>% ggplot(aes(as.numeric(date), deaths)) + 
+geom_point(size=3, alpha=.5, color="grey") + 
+geom_line(aes(as.numeric(date), smooth), color="red")
 
 dat %>% 
-  mutate(smooth = predict(fit), day = yday(date), year = as.character(year(date))) %>%
+  mutate(smooth = predict(fit, as.numeric(date)), day = yday(date), year = as.character(year(date))) %>%
   ggplot(aes(day, smooth, col = year)) +
   geom_line(lwd = 2)
+
+
+
